@@ -22,7 +22,7 @@
         .entity-card { transition: all 0.3s ease-in-out; }
         .entity-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
         .use-case-step { border-left: 3px solid #e5e7eb; }
-        .content-section { transition: opacity 0.4s ease-in-out, max-height 0.4s ease-in-out, transform 0.4s ease-in-out; overflow: hidden; }
+        .content-section { transition: opacity 0.4s ease-in-out, max-height 0.6s ease-in-out; overflow: hidden; }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
     </style>
 </head>
@@ -218,21 +218,22 @@
                 casos: document.getElementById('content-casos'),
             };
 
-            function switchTab(activeKey) {
+            let activeTabKey = 'descripcion';
+
+            function switchTab(newActiveKey) {
+                activeTabKey = newActiveKey;
                 Object.keys(tabs).forEach(key => {
                     const tab = tabs[key];
                     const content = contents[key];
                     
-                    if (key === activeKey) {
+                    if (key === activeTabKey) {
                         tab.classList.add('tab-active');
-                        content.style.maxHeight = content.scrollHeight + 'px';
                         content.style.opacity = '1';
-                        content.style.transform = 'translateY(0)';
+                        content.style.maxHeight = content.scrollHeight + 'px';
                     } else {
                         tab.classList.remove('tab-active');
-                        content.style.maxHeight = '0';
                         content.style.opacity = '0';
-                        content.style.transform = 'translateY(10px)';
+                        content.style.maxHeight = '0';
                     }
                 });
             }
@@ -253,13 +254,20 @@
                 const icon = button.querySelector('.arrow');
 
                 button.addEventListener('click', () => {
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                        icon.classList.remove('rotate-180');
-                    } else {
+                    const isOpening = !content.style.maxHeight || content.style.maxHeight === '0px';
+                    
+                    if (isOpening) {
                         content.style.maxHeight = content.scrollHeight + 'px';
                         icon.classList.add('rotate-180');
+                    } else {
+                        content.style.maxHeight = null;
+                        icon.classList.remove('rotate-180');
                     }
+
+                    setTimeout(() => {
+                        const parentSection = contents[activeTabKey];
+                        parentSection.style.maxHeight = parentSection.scrollHeight + 'px';
+                    }, 500);
                 });
             });
         });

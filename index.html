@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Interactiva: Washify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate Blue & White -->
+    <!-- Application Structure Plan: Se ha diseñado una estructura de navegación por secciones con pestañas (Descripción, Modelo de Datos, Roles, Casos de Uso). Esta arquitectura es ideal para un documento técnico, ya que permite al usuario enfocarse en una pieza de información a la vez (datos, usuarios o flujos) de manera ordenada y lógica, mejorando la comprensión sin abrumar. El flujo es lineal y predecible, imitando la lectura de un informe pero con interactividad añadida. -->
+    <!-- Visualization & Content Choices: 
+        - Modelo de Datos: Informe -> Estructura de tablas y relaciones. Meta -> Entender la arquitectura de la base de datos. Visualización -> Diagrama interactivo creado con HTML/CSS (divs y bordes) para evitar SVG. Interacción -> Hover sobre las entidades para resaltar sus atributos y relaciones. Justificación -> Un diagrama visual es infinitamente más claro que el texto para representar relaciones de datos.
+        - Modelo de Usuarios: Informe -> Lista de roles y permisos. Meta -> Comparar rápidamente las capacidades de cada rol. Visualización -> Columnas lado a lado. Interacción -> Pestañas para cambiar entre roles en vista móvil. Justificación -> La comparación directa facilita la identificación de diferencias clave en los permisos.
+        - Casos de Uso: Informe -> Listas de pasos. Meta -> Comprender el flujo de interacción del usuario. Visualización -> Acordeón interactivo para cada caso. Interacción -> Clic para expandir y ver los pasos secuenciales. Justificación -> Presentar los pasos de forma progresiva evita la sobrecarga de información y simula un recorrido a través de la app.
+        - Se confirma el uso de HTML/CSS para todos los elementos visuales. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .tab-active { border-color: #4f46e5; color: #4f46e5; }
+        .entity-card { transition: all 0.3s ease; }
+        .entity-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .use-case-step { border-left: 3px solid #e5e7eb; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        
+        <!-- HEADER -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Washify</h1>
+            <p class="text-lg text-slate-600 mt-2">Documentación Técnica Interactiva</p>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="mb-8 border-b border-slate-200">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-slate-500">
+                <li class="mr-2">
+                    <a href="#" id="tab-descripcion" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Descripción</a>
+                </li>
+                <li class="mr-2">
+                    <a href="#" id="tab-datos" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Modelo de Datos</a>
+                </li>
+                <li class="mr-2">
+                    <a href="#" id="tab-usuarios" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Roles de Usuario</a>
+                </li>
+                <li>
+                    <a href="#" id="tab-casos" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Casos de Uso</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- CONTENT SECTIONS -->
+        <main>
+            <!-- Section: Descripción General -->
+            <section id="content-descripcion" class="p-4 bg-white rounded-lg shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-4">Plataforma Digital para Lavaderos</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Washify es una plataforma diseñada para modernizar y conectar el ecosistema de lavaderos de autos en Argentina. Funciona como un mercado de dos lados: por un lado, ofrece a los clientes una aplicación móvil para descubrir, comparar y localizar lavaderos a través de un mapa interactivo. Por otro lado, proporciona a los dueños de los negocios una herramienta para digitalizar su presencia, publicar sus servicios y precios, y así alcanzar una mayor visibilidad y atraer nuevos clientes.
+                </p>
+                <p class="text-slate-600 leading-relaxed mt-4">
+                    El problema principal que resuelve es la falta de un canal centralizado y digital que facilite la conexión entre la oferta (lavaderos) y la demanda (conductores), agilizando la búsqueda de servicios y la captación de clientes.
+                </p>
+            </section>
+
+            <!-- Section: Modelo de Datos -->
+            <section id="content-datos" class="hidden p-4">
+                 <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Arquitectura de la Información</h2>
+                 <p class="text-center text-slate-600 mb-8 max-w-2xl mx-auto">El sistema se estructura en tres entidades principales: Usuarios, Lavaderos y Servicios. Las relaciones entre ellas permiten vincular a cada dueño con su negocio y a cada negocio con los servicios que ofrece. Pase el cursor sobre una entidad para ver sus detalles.</p>
+                <div class="grid md:grid-cols-3 gap-8 items-start">
+                    <!-- Entidad Usuario -->
+                    <div class="entity-card bg-white p-6 rounded-lg shadow-sm border-t-4 border-indigo-500">
+                        <h3 class="text-xl font-semibold text-slate-900 flex items-center">
+                            <span class="text-indigo-500 mr-2">👤</span> Usuario
+                        </h3>
+                        <ul class="mt-4 space-y-2 text-slate-600">
+                            <li><strong class="text-slate-700">id:</strong> UUID (PK)</li>
+                            <li><strong class="text-slate-700">email:</strong> Texto</li>
+                            <li><strong class="text-slate-700">nombre_completo:</strong> Texto</li>
+                            <li><strong class="text-slate-700">rol:</strong> Texto ('cliente'/'admin')</li>
+                        </ul>
+                    </div>
+                    <!-- Entidad Lavadero -->
+                    <div class="entity-card bg-white p-6 rounded-lg shadow-sm border-t-4 border-sky-500">
+                        <h3 class="text-xl font-semibold text-slate-900 flex items-center">
+                           <span class="text-sky-500 mr-2">🚗</span> Lavadero
+                        </h3>
+                        <ul class="mt-4 space-y-2 text-slate-600">
+                            <li><strong class="text-slate-700">id:</strong> UUID (PK)</li>
+                            <li><strong class="text-slate-700">nombre:</strong> Texto</li>
+                            <li><strong class="text-slate-700">direccion:</strong> Texto</li>
+                            <li><strong class="text-slate-700">latitud/longitud:</strong> Número</li>
+                            <li><strong class="text-slate-700">url_imagen:</strong> Texto</li>
+                            <li><strong class="text-slate-700">calificacion:</strong> Número</li>
+                            <li><strong class="text-slate-700">owner_id:</strong> UUID (FK a Usuario)</li>
+                        </ul>
+                    </div>
+                    <!-- Entidad Servicio -->
+                    <div class="entity-card bg-white p-6 rounded-lg shadow-sm border-t-4 border-emerald-500">
+                        <h3 class="text-xl font-semibold text-slate-900 flex items-center">
+                            <span class="text-emerald-500 mr-2">💧</span> Servicio
+                        </h3>
+                        <ul class="mt-4 space-y-2 text-slate-600">
+                            <li><strong class="text-slate-700">id:</strong> UUID (PK)</li>
+                            <li><strong class="text-slate-700">nombre:</strong> Texto</li>
+                            <li><strong class="text-slate-700">descripcion:</strong> Texto</li>
+                            <li><strong class="text-slate-700">precio:</strong> Número</li>
+                            <li><strong class="text-slate-700">lavadero_id:</strong> UUID (FK a Lavadero)</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="text-center mt-8 text-slate-500 text-sm">
+                    <p>Relación 1 a 1: Usuario (admin) → Lavadero</p>
+                    <p>Relación 1 a N: Lavadero → Servicio</p>
+                </div>
+            </section>
+
+            <!-- Section: Roles de Usuario -->
+            <section id="content-usuarios" class="hidden p-4">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Permisos y Roles</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Rol Cliente -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-semibold text-slate-900 mb-4">Cliente</h3>
+                        <p class="text-slate-600 mb-4">Usuario estándar de la app cuyo objetivo es encontrar y consumir servicios.</p>
+                        <ul class="space-y-2 text-slate-700">
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span>Registrarse e Iniciar Sesión.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span>Explorar y buscar lavaderos.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span>Ver perfiles detallados.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span>Editar su propio perfil.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-slate-400"> futuras: </span><span>Realizar reservas y dejar calificaciones.</span></li>
+                        </ul>
+                    </div>
+                    <!-- Rol Administrador -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-2 border-indigo-500">
+                        <h3 class="text-xl font-semibold text-indigo-600 mb-4">Administrador</h3>
+                        <p class="text-slate-600 mb-4">Dueño de un negocio cuyo objetivo es gestionar su presencia en la plataforma.</p>
+                        <ul class="space-y-2 text-slate-700">
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span>Hereda todos los permisos de Cliente.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span>Acceder a un Panel de Administración.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span><strong>CRUD</strong> sobre su propio lavadero.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-green-500">✓</span><span><strong>CRUD</strong> sobre los servicios de su lavadero.</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-slate-400"> futuras: </span><span>Gestionar reservas y ver estadísticas.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Casos de Uso -->
+            <section id="content-casos" class="hidden p-4">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Flujos de Interacción Clave</h2>
+                <div class="space-y-4 max-w-3xl mx-auto" id="use-cases-container">
+                    <!-- Caso de Uso 1 -->
+                    <div class="use-case bg-white rounded-lg shadow-sm overflow-hidden">
+                        <button class="w-full text-left p-4 font-semibold text-slate-800 flex justify-between items-center">
+                            <span>1. Cliente busca y consulta un lavadero</span>
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="content hidden p-4 border-t border-slate-200 bg-slate-50">
+                            <div class="space-y-4">
+                               <div class="use-case-step pl-4"><strong class="text-indigo-600">Actor:</strong> Cliente (sin sesión)</div>
+                               <div class="use-case-step pl-4"><strong class="text-indigo-600">Objetivo:</strong> Encontrar y ver detalles de un lavadero.</div>
+                               <div class="use-case-step pl-4">1. Abre la app y ve el mapa.</div>
+                               <div class="use-case-step pl-4">2. Toca un pin en el mapa.</div>
+                               <div class="use-case-step pl-4">3. El sistema muestra una tarjeta de información.</div>
+                               <div class="use-case-step pl-4">4. Presiona "Ver Detalles".</div>
+                               <div class="use-case-step pl-4">5. El sistema navega a la pantalla de detalles completos.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Caso de Uso 2 -->
+                    <div class="use-case bg-white rounded-lg shadow-sm overflow-hidden">
+                        <button class="w-full text-left p-4 font-semibold text-slate-800 flex justify-between items-center">
+                            <span>2. Administrador actualiza su negocio</span>
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="content hidden p-4 border-t border-slate-200 bg-slate-50">
+                             <div class="space-y-4">
+                               <div class="use-case-step pl-4"><strong class="text-indigo-600">Actor:</strong> Administrador (con sesión)</div>
+                               <div class="use-case-step pl-4"><strong class="text-indigo-600">Objetivo:</strong> Modificar la información de su lavadero.</div>
+                               <div class="use-case-step pl-4">1. Inicia sesión con sus credenciales.</div>
+                               <div class="use-case-step pl-4">2. Es redirigido al Panel de Administración.</div>
+                               <div class="use-case-step pl-4">3. Presiona "Gestionar mi Lavadero".</div>
+                               <div class="use-case-step pl-4">4. El sistema muestra un formulario con los datos actuales.</div>
+                               <div class="use-case-step pl-4">5. Modifica los campos y presiona "Guardar Cambios".</div>
+                               <div class="use-case-step pl-4">6. El sistema actualiza la base de datos y confirma la operación.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Caso de Uso 3 -->
+                    <div class="use-case bg-white rounded-lg shadow-sm overflow-hidden">
+                        <button class="w-full text-left p-4 font-semibold text-slate-800 flex justify-between items-center">
+                            <span>3. Nuevo usuario se registra</span>
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="content hidden p-4 border-t border-slate-200 bg-slate-50">
+                             <div class="space-y-4">
+                               <div class="use-case-step pl-4"><strong class="text-indigo-600">Actor:</strong> Visitante</div>
+                               <div class="use-case-step pl-4"><strong class="text-indigo-600">Objetivo:</strong> Crear una cuenta de cliente.</div>
+                               <div class="use-case-step pl-4">1. Presiona "Perfil" en la barra de navegación.</div>
+                               <div class="use-case-step pl-4">2. Es llevado a la pantalla de Login.</div>
+                               <div class="use-case-step pl-4">3. Presiona el enlace "Regístrate".</div>
+                               <div class="use-case-step pl-4">4. Completa el formulario de registro.</div>
+                               <div class="use-case-step pl-4">5. Presiona "Registrarse".</div>
+                               <div class="use-case-step pl-4">6. El sistema crea la cuenta, inicia sesión y lo redirige a su perfil.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = {
+                descripcion: document.getElementById('tab-descripcion'),
+                datos: document.getElementById('tab-datos'),
+                usuarios: document.getElementById('tab-usuarios'),
+                casos: document.getElementById('tab-casos'),
+            };
+
+            const contents = {
+                descripcion: document.getElementById('content-descripcion'),
+                datos: document.getElementById('content-datos'),
+                usuarios: document.getElementById('content-usuarios'),
+                casos: document.getElementById('content-casos'),
+            };
+
+            function switchTab(activeKey) {
+                Object.keys(tabs).forEach(key => {
+                    const tab = tabs[key];
+                    const content = contents[key];
+                    if (key === activeKey) {
+                        tab.classList.add('tab-active');
+                        content.classList.remove('hidden');
+                    } else {
+                        tab.classList.remove('tab-active');
+                        content.classList.add('hidden');
+                    }
+                });
+            }
+
+            Object.keys(tabs).forEach(key => {
+                tabs[key].addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchTab(key);
+                });
+            });
+
+            // Set initial active tab
+            switchTab('descripcion');
+
+            // Accordion for Use Cases
+            const useCaseContainer = document.getElementById('use-cases-container');
+            if(useCaseContainer) {
+                const useCases = useCaseContainer.querySelectorAll('.use-case');
+                useCases.forEach(useCase => {
+                    const button = useCase.querySelector('button');
+                    const content = useCase.querySelector('.content');
+                    const icon = button.querySelector('span:last-child');
+
+                    button.addEventListener('click', () => {
+                        content.classList.toggle('hidden');
+                        icon.classList.toggle('rotate-180');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
